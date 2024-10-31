@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom';
-import { useAppSelector } from '../../../store';
 import { NAMES_CONSTANTS } from "../../constants";
 
 interface IDeleteModal {
@@ -8,8 +7,6 @@ interface IDeleteModal {
 }
 
 function DeleteModal({ closeModal, confirmDelete }: IDeleteModal) {
-    const { loading } = useAppSelector((state) => state.posts)
-
     return ReactDOM.createPortal(
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
