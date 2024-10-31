@@ -1,42 +1,31 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { fetchPosts } from '../../store/slices/posts';
-
+import PostCardDetails from '../../components/posts/card';
+import Skeleton from '../../components/skeleton';
+import CardWrapper from '../../components/posts/cardWrapper';
+import { NAMES_CONSTANTS } from '../../components/constants';
 
 const HomePage: React.FC = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
     const { posts, loading, error } = useAppSelector(state => state.posts);
 
     useEffect(() => {
-        // Redirect to first post if no posts are loaded
         if (posts.length === 0) {
             dispatch(fetchPosts());
         }
     }, [dispatch, posts]);
 
-    // useEffect(() => {
-    //     // Automatically redirect to the first post when posts are loaded
-    //     if (posts.length > 0) {
-    //         navigate(`/post/${posts[0].id}`);
-    //     }
-    // }, [posts, navigate]);
-
-    if (loading === 'pending') return <div>Loading posts...</div>;
-    if (error) return <div>Error: {error}</div>;
-    console.log("error", error);
+    if (loading === 'pending') return <Skeleton count={3} />;
+    if (error) return <div>{NAMES_CONSTANTS.SOMETHING_WENT_WRONG}: {error}</div>;
 
     return (
-        <div>
-            <h1>Posts</h1>
-            {posts.map(post => (
-                <div key={post.id}>
-                    <Link to={`/post/${post.id}`}>
-                        {post.title}
-                    </Link>
-                </div>
-            ))}
+        <div className='grid place-items-center w-full h-screen px-6'>
+            <CardWrapper title={NAMES_CONSTANTS.POST}>
+                {posts.map(post => (
+                    <PostCardDetails post={post} key={post.id} />
+                ))}
+            </CardWrapper>
         </div>
     );
 };

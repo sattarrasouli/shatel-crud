@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Post, PostsState } from '../../../api/types';
 import { PostService } from '../../../services/postServices';
+import { toast } from 'react-toastify';
+import { NAMES_CONSTANTS } from '../../../components/constants';
 
 const initialState: PostsState = {
     posts: [],
@@ -61,7 +63,10 @@ export const deletePost = createAsyncThunk(
     'posts/deletePost',
     async (id: number, { rejectWithValue }) => {
         try {
-            await PostService.deletePost(id);
+            const response = await PostService.deletePost(id);
+            if (response.status === 200) {
+                toast(NAMES_CONSTANTS.ITEM_REMOVED_SUCCESSFULLY, { type: 'success' })
+            }
             return id;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.message || 'Failed to delete post');
@@ -113,7 +118,7 @@ const postsSlice = createSlice({
             // Delete Post
             .addCase(deletePost.fulfilled, (state, action) => {
                 state.posts = state.posts.filter(post => post.id !== action.payload);
-            });
+            })
     },
 });
 

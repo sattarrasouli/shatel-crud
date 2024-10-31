@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { NAMES_CONSTANTS } from '../../../components/constants';
+import PostCardDetails from '../../../components/posts/card';
+import CardWrapper from '../../../components/posts/cardWrapper';
+import Skeleton from '../../../components/skeleton';
 import { useAppDispatch, useAppSelector } from '../../../store';
 import { fetchPostById } from '../../../store/slices/posts';
 
@@ -14,16 +18,15 @@ const PostDetailPage: React.FC = () => {
         }
     }, [id, dispatch]);
 
-    if (loading === 'pending') return <div>Loading post...</div>;
-    if (error) return <div>Error: {error}</div>;
-    if (!currentPost) return <div>No post found</div>;
+    if (loading === 'pending') return <Skeleton count={1} />;
+    if (error) return <div>{NAMES_CONSTANTS.SOMETHING_WENT_WRONG}: {error}</div>;
+    if (!currentPost) return <div>{NAMES_CONSTANTS.NO_POST_FOUND}</div>;
 
     return (
-        <div>
-            <Link to="/">Back to Posts</Link>
-            <h1>{currentPost.title}</h1>
-            <p>{currentPost.body}</p>
-            <p>User ID: {currentPost.userId}</p>
+        <div className='grid place-items-center w-full h-screen px-6'>
+            <CardWrapper title={NAMES_CONSTANTS.DETAILS}>
+                <PostCardDetails post={currentPost} />
+            </CardWrapper>
         </div>
     );
 };
