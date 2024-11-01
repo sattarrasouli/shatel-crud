@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
             <CardWrapper title={NAMES_CONSTANTS.POST} search={true} setSearchTerm={setSearchTerm} searchTerm={searchTerm}>
                 <div className="flex flex-col min-h-64">
                     {filteredPosts.map(post => (
-                        <PostCardDetails post={post} key={post.id} />
+                        <PostCardDetails visibleButtons post={post} key={post.id} />
                     ))}
 
                     <div ref={loaderRef} className="w-full py-4">

@@ -13,7 +13,7 @@ function CardWrapper({ title, children, search, searchTerm, setSearchTerm }: ICa
     const [searchBar, setSearchBar] = useState(false)
 
     return (
-        <div className='flex relative w-full max-w-xl flex-col bg-white bg-opacity-70 backdrop-blur-md rounded-xl max-h-[80%] overflow-scroll'>
+        <div className='flex relative w-full max-w-xl flex-col max-h-[70%] overflow-scroll bg-white bg-opacity-70 backdrop-blur-md rounded-xl'>
             <div className='sticky top-0 z-10 flex justify-between items-center p-4 bg-white bg-opacity-10 backdrop-blur-md'>
                 <h1 className='text-black text-3xl font-bold'>{title}</h1>
                 {search && (

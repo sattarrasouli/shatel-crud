@@ -25,7 +25,7 @@ const PostDetailPage: React.FC = () => {
     return (
         <div className='grid place-items-center w-full h-screen px-6'>
             <CardWrapper title={NAMES_CONSTANTS.DETAILS}>
-                <PostCardDetails post={currentPost} />
+                <PostCardDetails visibleButtons={false} post={currentPost} />
             </CardWrapper>
         </div>
     );

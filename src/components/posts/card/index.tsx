@@ -9,10 +9,11 @@ import { deletePost } from '../../../store/slices/posts'
 import { NAMES_CONSTANTS } from '../../constants'
 
 interface IPostCardDetails {
-    post: Post
+    post: Post,
+    visibleButtons: boolean
 }
 
-function PostCardDetails({ post }: IPostCardDetails) {
+function PostCardDetails({ post, visibleButtons = true }: IPostCardDetails) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,6 +39,35 @@ function PostCardDetails({ post }: IPostCardDetails) {
         navigate(`/editPost/${post.id}`);
     };
 
+    const Buttons = () => (
+        <div className='flex flex-row justify-end w-full'>
+            <button
+                onClick={remove}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+                <img
+                    alt='delete'
+                    className='w-5 h-5 m-2'
+                    src={DeleteIcon}
+                    width={20}
+                    height={20}
+                />
+            </button>
+            <button
+                onClick={handleEdit}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+                <img
+                    src={EditIcon}
+                    alt="Edit"
+                    width={20}
+                    height={20}
+                    className="w-5 h-5 m-2"
+                />
+            </button>
+        </div>
+    )
+
     return (
         <div key={post.id} className='flex flex-col bg-white shadow-lg rounded-lg m-3 text-black p-4'>
             <Link to={`/post/${post.id}`}>
@@ -45,32 +75,10 @@ function PostCardDetails({ post }: IPostCardDetails) {
                 <p className='text-black text-sm font-semibold'>{NAMES_CONSTANTS.ID}: <span className='text-black text-sm font-normal'>{post.id}</span></p>
                 <p className='text-black text-sm font-semibold'>{NAMES_CONSTANTS.USER_ID}: <span className='text-black text-sm font-normal'>{post.userId}</span></p>
                 <p className='text-black text-sm font-semibold'>{NAMES_CONSTANTS.BODY}: <span className='text-black text-sm font-normal'>{post.body}</span></p>
-                <div className='flex flex-row justify-end w-full'>
-                    <button
-                        onClick={remove}
-                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                    >
-                        <img
-                            alt='delete'
-                            className='w-5 h-5 m-2'
-                            src={DeleteIcon}
-                            width={20}
-                            height={20}
-                        />
-                    </button>
-                    <button
-                        onClick={handleEdit}
-                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                    >
-                        <img
-                            src={EditIcon}
-                            alt="Edit"
-                            width={20}
-                            height={20}
-                            className="w-5 h-5 m-2"
-                        />
-                    </button>
-                </div>
+                {
+                    visibleButtons &&
+                    <Buttons />
+                }
             </Link>
 
             {isModalOpen && (
