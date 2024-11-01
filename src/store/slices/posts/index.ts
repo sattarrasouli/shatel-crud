@@ -52,6 +52,9 @@ export const updatePost = createAsyncThunk(
     async ({ id, postData }: { id: number, postData: Partial<Post> }, { rejectWithValue }) => {
         try {
             const response = await PostService.updatePost(id, postData);
+            if (response.status === 200) {
+                toast(NAMES_CONSTANTS.ITEM_UPDATED_SUCCESSFULLY, { type: 'success' })
+            }
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.message || 'Failed to update post');
@@ -98,25 +101,54 @@ const postsSlice = createSlice({
             })
 
             // Fetch Post By ID
+            .addCase(fetchPostById.pending, (state, action) => {
+                state.loading = "pending";
+            })
+
             .addCase(fetchPostById.fulfilled, (state, action) => {
+                state.loading = "succeeded"
                 state.currentPost = action.payload;
             })
 
+            .addCase(fetchPostById.rejected, (state, action) => {
+                state.loading = "failed"
+                state.error = action.payload as string;
+            })
             // Create Post
             .addCase(createPost.fulfilled, (state, action) => {
                 state.posts.unshift(action.payload);
             })
 
             // Update Post
+            .addCase(updatePost.pending, (state, action) => {
+                state.loading = 'processing'
+            })
+
             .addCase(updatePost.fulfilled, (state, action) => {
+                state.loading = 'succeeded'
                 const index = state.posts.findIndex(post => post.id === action.payload.id);
                 if (index !== -1) {
                     state.posts[index] = action.payload;
                 }
             })
 
+            .addCase(updatePost.rejected, (state, action) => {
+                state.loading = 'failed'
+            })
+
             // Delete Post
+            .addCase(deletePost.pending, (state, action) => {
+                state.loading = 'processing'
+                state.posts = state.posts.filter(post => post.id !== action.payload);
+            })
+
             .addCase(deletePost.fulfilled, (state, action) => {
+                state.loading = 'succeeded'
+                state.posts = state.posts.filter(post => post.id !== action.payload);
+            })
+
+            .addCase(deletePost.rejected, (state, action) => {
+                state.loading = 'failed'
                 state.posts = state.posts.filter(post => post.id !== action.payload);
             })
     },

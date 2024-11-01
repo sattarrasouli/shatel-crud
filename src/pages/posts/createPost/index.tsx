@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../store';
-import { fetchPostById, updatePost } from '../../../store/slices/posts';
+import { createPost, fetchPostById, updatePost } from '../../../store/slices/posts';
 import LoadingSpin from '../../../components/loadingSpin';
 import ErrorCard from '../../../components/errorCard';
 import { NAMES_CONSTANTS } from '../../../components/constants';
 import Skeleton from '../../../components/skeleton';
 import PostForm from '../../../components/posts/form';
 
-const EditPostPage: React.FC = () => {
+const CreatePost: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -18,21 +18,6 @@ const EditPostPage: React.FC = () => {
         title: '',
         body: ''
     });
-
-    useEffect(() => {
-        if (id) {
-            dispatch(fetchPostById(parseInt(id)));
-        }
-    }, [dispatch, id]);
-
-    useEffect(() => {
-        if (currentPost) {
-            setFormData({
-                title: currentPost.title,
-                body: currentPost.body
-            });
-        }
-    }, [currentPost]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -46,21 +31,15 @@ const EditPostPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (id && currentPost) {
-            try {
-                await dispatch(updatePost({
-                    id: parseInt(id),
-                    postData: {
-                        id: parseInt(id),
-                        title: formData.title,
-                        body: formData.body,
-                        userId: currentPost.userId
-                    }
-                })).unwrap();
-                navigate('/');
-            } catch (err) {
-                console.error('Failed to update post:', err);
-            }
+        try {
+            await dispatch(createPost({
+                title: formData.title,
+                body: formData.body,
+                userId: 1
+            })).unwrap();
+            navigate('/');
+        } catch (err) {
+            console.error('Failed to update post:', err);
         }
     };
 
@@ -76,7 +55,6 @@ const EditPostPage: React.FC = () => {
                         <h1 className="text-2xl font-semibold text-gray-900 mb-6">
                             {NAMES_CONSTANTS.EDIT_POST}
                         </h1>
-
                         <PostForm
                             formData={formData}
                             handleChange={handleChange}
@@ -94,4 +72,4 @@ const EditPostPage: React.FC = () => {
     );
 };
 
-export default EditPostPage;
+export default CreatePost;

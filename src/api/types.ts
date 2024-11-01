@@ -8,6 +8,6 @@ export interface Post {
 export interface PostsState {
     posts: Post[];
     currentPost: Post | null;
-    loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+    loading: 'idle' | 'pending' | 'succeeded' | 'failed' | 'processing';
     error: string | null;
 }

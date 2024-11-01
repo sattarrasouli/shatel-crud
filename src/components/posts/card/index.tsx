@@ -4,8 +4,9 @@ import { Post } from '../../../api/types'
 import DeleteIcon from "../../../assets/svgs/delete.svg"
 import EditIcon from "../../../assets/svgs/edit.svg"
 import DeleteModal from '../../modals/deleteModal'
-import { useAppDispatch } from '../../../store'
+import { useAppDispatch, useAppSelector } from '../../../store'
 import { deletePost } from '../../../store/slices/posts'
+import { NAMES_CONSTANTS } from '../../constants'
 
 interface IPostCardDetails {
     post: Post
@@ -16,11 +17,13 @@ function PostCardDetails({ post }: IPostCardDetails) {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const { loading } = useAppSelector(state => state.posts);
+
     const closeModal = () => setIsModalOpen(false);
 
-    const confirmDelete = () => {
+    const confirmDelete = async () => {
+        await dispatch(deletePost(post.id as number))
         closeModal();
-        dispatch(deletePost(post.id as number))
     };
 
     const remove = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,12 +39,12 @@ function PostCardDetails({ post }: IPostCardDetails) {
     };
 
     return (
-        <div key={post.id} className='flex flex-col bg-white shadow-lg rounded-lg m-3 bg-zinc-400 text-black p-4'>
+        <div key={post.id} className='flex flex-col bg-white shadow-lg rounded-lg m-3 text-black p-4'>
             <Link to={`/post/${post.id}`}>
-                <p className='text-black text-sm font-semibold'>Title: <span className='text-black text-sm font-normal'>{post.title}</span></p>
-                <p className='text-black text-sm font-semibold'>ID: <span className='text-black text-sm font-normal'>{post.id}</span></p>
-                <p className='text-black text-sm font-semibold'>User ID: <span className='text-black text-sm font-normal'>{post.userId}</span></p>
-                <p className='text-black text-sm font-semibold'>Body: <span className='text-black text-sm font-normal'>{post.body}</span></p>
+                <p className='text-black text-sm font-semibold'>{NAMES_CONSTANTS.TITLE}: <span className='text-black text-sm font-normal'>{post.title}</span></p>
+                <p className='text-black text-sm font-semibold'>{NAMES_CONSTANTS.ID}: <span className='text-black text-sm font-normal'>{post.id}</span></p>
+                <p className='text-black text-sm font-semibold'>{NAMES_CONSTANTS.USER_ID}: <span className='text-black text-sm font-normal'>{post.userId}</span></p>
+                <p className='text-black text-sm font-semibold'>{NAMES_CONSTANTS.BODY}: <span className='text-black text-sm font-normal'>{post.body}</span></p>
                 <div className='flex flex-row justify-end w-full'>
                     <button
                         onClick={remove}
@@ -71,7 +74,7 @@ function PostCardDetails({ post }: IPostCardDetails) {
             </Link>
 
             {isModalOpen && (
-                <DeleteModal confirmDelete={confirmDelete} closeModal={() => setIsModalOpen(false)} />
+                <DeleteModal loading={loading} confirmDelete={confirmDelete} closeModal={() => setIsModalOpen(false)} />
             )}
         </div>
     )
