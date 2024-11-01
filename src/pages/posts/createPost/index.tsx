@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../store';
-import { createPost, fetchPostById, updatePost } from '../../../store/slices/posts';
-import LoadingSpin from '../../../components/loadingSpin';
-import ErrorCard from '../../../components/errorCard';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { NAMES_CONSTANTS } from '../../../components/constants';
-import Skeleton from '../../../components/skeleton';
+import ErrorCard from '../../../components/errorCard';
 import PostForm from '../../../components/posts/form';
+import Skeleton from '../../../components/skeleton';
+import { useAppDispatch, useAppSelector } from '../../../store';
+import { createPost } from '../../../store/slices/posts';
 
 const CreatePost: React.FC = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { currentPost, loading, error } = useAppSelector(state => state.posts);
+    const { loading, error } = useAppSelector(state => state.posts);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -39,7 +37,7 @@ const CreatePost: React.FC = () => {
             })).unwrap();
             navigate('/');
         } catch (err) {
-            console.error('Failed to update post:', err);
+            console.error('Failed to post:', err);
         }
     };
 
@@ -53,7 +51,7 @@ const CreatePost: React.FC = () => {
                 <div className="bg-white shadow-sm rounded-lg bg-white bg-opacity-70 backdrop-blur-md">
                     <div className="px-4 py-5 sm:p-6">
                         <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-                            {NAMES_CONSTANTS.EDIT_POST}
+                            {NAMES_CONSTANTS.CREATE_POST}
                         </h1>
                         <PostForm
                             formData={formData}

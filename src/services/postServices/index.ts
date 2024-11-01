@@ -8,8 +8,22 @@ export const PostService = {
         axiosInstance.post<Post>(ENDPOINTS.POSTS.CREATE(), post),
 
     // Read
-    getAllPosts: () =>
-        axiosInstance.get<Post[]>(ENDPOINTS.POSTS.GET_ALL()),
+    getAllPosts: ({
+        page = 1,
+        limit = 10
+    }: {
+        page?: number,
+        limit?: number
+    } = {}) => {
+        const queryParams = new URLSearchParams({
+            '_page': page.toString(),
+            '_limit': limit.toString()
+        });
+
+        return axiosInstance.get<Post[]>(
+            `${ENDPOINTS.POSTS.GET_ALL()}?${queryParams.toString()}`
+        );
+    },
 
     getPostById: (id: number) =>
         axiosInstance.get<Post>(ENDPOINTS.POSTS.GET_BY_ID(id)),

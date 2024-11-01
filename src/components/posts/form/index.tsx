@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpin from '../../loadingSpin';
+import { NAMES_CONSTANTS } from '../../constants';
 
 interface PostFormProps {
     formData: {
@@ -85,7 +86,7 @@ const PostForm: React.FC<PostFormProps> = ({
                     {loading === 'processing' ? (
                         <>
                             <LoadingSpin />
-                            {submitText}
+                            {NAMES_CONSTANTS.SAVING}
                         </>
                     ) : submitText}
                 </button>
