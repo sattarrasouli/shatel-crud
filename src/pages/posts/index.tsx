@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
     if (loading === "pending" && posts.length === 0) return <Skeleton count={4} />
 
     return (
-        <div className="flex justify-center items-center relative w-full h-screen px-6">
+        <div className="flex justify-center items-center w-full h-screen px-6">
             <CardWrapper title={NAMES_CONSTANTS.POST} search={true} setSearchTerm={setSearchTerm} searchTerm={searchTerm}>
                 <div className="flex flex-col min-h-64">
                     {filteredPosts.map(post => (
