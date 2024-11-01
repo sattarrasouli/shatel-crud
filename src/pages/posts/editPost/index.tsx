@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { NAMES_CONSTANTS } from '../../../components/constants';
+import ErrorCard from '../../../components/errorCard';
+import PostForm from '../../../components/posts/form';
+import Skeleton from '../../../components/skeleton';
 import { useAppDispatch, useAppSelector } from '../../../store';
 import { fetchPostById, updatePost } from '../../../store/slices/posts';
-import LoadingSpin from '../../../components/loadingSpin';
-import ErrorCard from '../../../components/errorCard';
-import { NAMES_CONSTANTS } from '../../../components/constants';
-import Skeleton from '../../../components/skeleton';
-import PostForm from '../../../components/posts/form';
 
 const EditPostPage: React.FC = () => {
     const { id } = useParams();

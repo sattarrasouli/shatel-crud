@@ -39,6 +39,9 @@ export const fetchPostById = createAsyncThunk(
             const response = await PostService.getPostById(id);
             return response.data;
         } catch (error: any) {
+            if (error instanceof Error) {
+                toast(error.message, { type: 'error' })
+            }
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch post');
         }
     }
@@ -54,6 +57,9 @@ export const createPost = createAsyncThunk(
             }
             return response.data;
         } catch (error: any) {
+            if (error instanceof Error) {
+                toast(error.message, { type: 'error' })
+            }
             return rejectWithValue(error.response?.data?.message || 'Failed to create post');
         }
     }
@@ -69,6 +75,9 @@ export const updatePost = createAsyncThunk(
             }
             return response.data;
         } catch (error: any) {
+            if (error instanceof Error) {
+                toast(error.message, { type: 'error' })
+            }
             return rejectWithValue(error.response?.data?.message || 'Failed to update post');
         }
     }
@@ -84,6 +93,9 @@ export const deletePost = createAsyncThunk(
             }
             return id;
         } catch (error: any) {
+            if (error instanceof Error) {
+                toast(error.message, { type: 'error' })
+            }
             return rejectWithValue(error.response?.data?.message || 'Failed to delete post');
         }
     }
@@ -191,4 +203,5 @@ export const {
     resetPosts,
     resetCurrentPost
 } = postsSlice.actions;
+
 export default postsSlice.reducer;

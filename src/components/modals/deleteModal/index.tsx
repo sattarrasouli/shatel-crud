@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom';
 import { NAMES_CONSTANTS } from "../../constants";
-import { useAppSelector } from '../../../store';
 
 interface IDeleteModal {
     closeModal: () => void;

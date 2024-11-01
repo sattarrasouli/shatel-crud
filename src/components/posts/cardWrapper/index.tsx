@@ -4,9 +4,9 @@ import SearchIcon from "../../../assets/svgs/search.svg"
 interface ICardWrapper {
     title: string,
     children: React.ReactNode,
-    search: boolean,
-    searchTerm: string,
-    setSearchTerm: (value: string) => void
+    search?: boolean,
+    searchTerm?: string,
+    setSearchTerm?: (value: string) => void
 }
 
 function CardWrapper({ title, children, search, searchTerm, setSearchTerm }: ICardWrapper) {
@@ -23,7 +23,7 @@ function CardWrapper({ title, children, search, searchTerm, setSearchTerm }: ICa
                                 type="text"
                                 placeholder="Search posts by title..."
                                 value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onChange={(e) => setSearchTerm && setSearchTerm(e.target.value)}
                                 className='w-3/4 px-6 py-1 border-0 outline-0 rounded-md bg-gray-100 focus:outline-none focus:ring-1 focus:ring-cyan-500'
                             />
                         )
